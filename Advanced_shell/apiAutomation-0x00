@@ -1,0 +1,8 @@
+#!/bin/bash
+# a shell script that makes a request to the Pokémon API
+# and retrieves data for a specific Pokémon Pikachu.
+
+url=https://pokeapi.co/api/v2/pokemon/
+
+# save the data to a data.json on success, or error.txt on failure
+curl -s $url/pikachu > data.json || echo "Error: Could not retrieve data" > error.txt
