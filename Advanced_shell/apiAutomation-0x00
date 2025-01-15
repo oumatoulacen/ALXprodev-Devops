@@ -4,5 +4,5 @@
 
 url=https://pokeapi.co/api/v2/pokemon/
 
-# save the data to a data.json on success, or error.txt on failure
-curl -s $url/pikachu > data.json || echo "Error: Could not retrieve data" > error.txt
+# save the data to data.json file on success, or errors.txt on failure
+curl -s $url/pikachu > data.json || echo "Error: Could not retrieve data" > errors.txt
