@@ -3,6 +3,8 @@
 
 pokemon_names=("venusaur" "bulbasaur" "ivysaur" "ienusaur" "charmander" "charmeleon")
 api_url="https://pokeapi.co/api/v2/pokemon/"
+tries=3
+
 for name in "${pokemon_names[@]}"
 do
     http_response=$(curl -s -w "%{http_code}" -o "$name.json" "$api_url$name")
@@ -10,6 +12,15 @@ do
     if [ "$http_response" -eq 200 ]; then
         echo "Data for $name is saved to $name.json"
     else
+        while [ $tries -gt 0 ]; do
+            http_response=$(curl -s -w "%{http_code}" -o "$name.json" "$api_url$name")
+            if [ "$http_response" -eq 200 ]; then
+                echo "Data for $name is saved to $name.json"
+                break
+            else
+                tries=$((tries-1))
+            fi
+        done
         echo "[$(date)] Error: Failed to fetch data for $name. HTTP Status: $http_response" >> "errors.txt"
         echo "Failed to fetch data for $name. Check errors.txt for details."
     fi
