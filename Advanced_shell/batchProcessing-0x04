@@ -1,0 +1,33 @@
+#!/bin/bash
+# Automate the retrieval of data for multiple Pokémon and store it in separate files.
+
+pokemon_names=("venusaur" "bulbasaur" "ivysaur" "ienusaur" "charmander" "charmeleon")
+api_url="https://pokeapi.co/api/v2/pokemon/"
+tries=3
+
+for name in "${pokemon_names[@]}"
+do
+    http_response=$(curl -s -w "%{http_code}" -o "$name.json" "$api_url$name") & # Send the request in the background
+    # Check if the request was successful
+    if [ "$http_response" -eq 200 ]; then
+        echo "Data for $name is saved to $name.json"
+    else
+        while [ $tries -gt 0 ]; do
+            http_response=$(curl -s -w "%{http_code}" -o "$name.json" "$api_url$name")
+            if [ "$http_response" -eq 200 ]; then
+                echo "Data for $name is saved to $name.json"
+                break
+            else
+                tries=$((tries-1))
+            fi
+        done
+        echo "[$(date)] Error: Failed to fetch data for $name. HTTP Status: $http_response" >> "errors.txt"
+        echo "Failed to fetch data for $name. Check errors.txt for details."
+    fi
+
+    # handle rate limiting
+    sleep 1
+done
+
+wait # Wait for all background processes to finish
+echo "Batch processing completed."
