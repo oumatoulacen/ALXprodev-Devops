@@ -29,5 +29,13 @@ do
     sleep 1
 done
 
-wait # Wait for all background processes to finish
+# List all background jobs
+jobs
+
+# Wait for all background jobs to complete
+wait
+
+# Kill any remaining background jobs (if any)
+jobs -p | xargs -r kill
+
 echo "Batch processing completed."
