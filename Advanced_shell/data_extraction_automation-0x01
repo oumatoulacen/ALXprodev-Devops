@@ -17,5 +17,4 @@ formatted_weight=$(echo "$data" | jq '.weight' | awk '{print $1/10}')
 type=$(echo "$data" | jq -r '.types[0].type.name' | sed 's/./\u&/')
 
 # Print the extracted data
-# echo "$name is of type $type, weighs ${weight}kg, and is ${height}m tall."
 echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
