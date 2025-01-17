@@ -8,13 +8,14 @@ data=$(<data.json)
 name=$(echo "$data" | jq -r '.name' | sed 's/./\u&/')
 
 # Extract the Pokémon’s height
-height=$(echo "$data" | jq '.height / 10')
+formatted_height=$(echo "$data" | jq '.height / 10')
 
 # Extract the Pokémon’s weight
-weight=$(echo "$data" | jq '.weight' | awk '{print $1/10}')
+formatted_weight=$(echo "$data" | jq '.weight' | awk '{print $1/10}')
 
 # Extract the Pokémon’s type
 type=$(echo "$data" | jq -r '.types[0].type.name' | sed 's/./\u&/')
 
 # Print the extracted data
-echo "$name is of type $type, weighs ${weight}kg, and is ${height}m tall."
+# echo "$name is of type $type, weighs ${weight}kg, and is ${height}m tall."
+echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
