@@ -7,7 +7,7 @@ tries=3
 
 for name in "${pokemon_names[@]}"
 do
-    http_response=$(curl -s -w "%{http_code}" -o "$name.json" "$api_url$name")
+    http_response=$(curl -s -w "%{http_code}" -o "$name.json" "$api_url$name") & # Send the request in the background
     # Check if the request was successful
     if [ "$http_response" -eq 200 ]; then
         echo "Data for $name is saved to $name.json"
@@ -28,3 +28,6 @@ do
     # handle rate limiting
     sleep 1
 done
+
+wait # Wait for all background processes to finish
+echo "Batch processing completed."
